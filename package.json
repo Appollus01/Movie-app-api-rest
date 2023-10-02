@@ -1,0 +1,15 @@
+{
+  "name": "movie-app-api-rest",
+  "version": "1.0.0",
+  "description": "Curso practico de consumo de API REST con JavaScript",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Appollus01/Movie-app-api-rest.git"
+  },
+  "author": "@Apollus01",
+  "license": "MIT"
+}
