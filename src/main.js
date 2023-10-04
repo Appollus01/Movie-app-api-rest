@@ -90,3 +90,18 @@ async function getMoviesByCategory(id) {
 
     console.log('category'+ movies);
 }
+
+async function getMoviesBySearch(query) {
+    const { data } = await api('search/movie', {
+        params: {
+            query: searchFormInput.value,
+        },
+    });
+    
+    const movies = data.results;
+
+    createMovies(movies, genericSection);
+
+    console.log('search'+ movies);
+
+}
