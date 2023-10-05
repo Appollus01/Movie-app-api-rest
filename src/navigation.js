@@ -91,6 +91,7 @@ function movieDetailPage() {
     const [_, movieId] = location.hash.split('=');
 
     getMovieById(movieId);
+    
 }
 
 function searchPage() {

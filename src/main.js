@@ -121,7 +121,7 @@ async function getTrendingMovies() {
 }
 
 async function getMovieById(movieId) {
-    const {data: movie} = await api(`movie/${movieId}`);
+    const {data: movie} = await api(`movie/${movieId}?language=es`);
 
     const movieImgUrl = 'https://image.tmdb.org/t/p/w300' + movie.poster_path;
     headerSection.style.background = `
@@ -133,4 +133,13 @@ async function getMovieById(movieId) {
     movieDetailScore.textContent = movie.vote_average;
 
     createCategories(movie.genres, movieDetailCategoriesList);
+
+    getRelatedMovieById(movieId);
+}
+
+async function getRelatedMovieById(id) {
+    const {data} = await api(`movie/${id}/similar`);
+    const relatedMovies = data.results;
+
+    createMovies(relatedMovies, relatedMoviesContainer);
 }
