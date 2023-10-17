@@ -21,8 +21,12 @@ const lazyLoader = new IntersectionObserver( (entries) => {
 
 // helpers
 
-function createMovies(movies, container, lazyLoad=false) {
-    container.innerHTML = '';
+function createMovies(movies, container, {lazyLoad=false, clean = false,} = {},) {
+
+    if (clean) {
+        container.innerHTML = '';
+    }
+    
 
     movies.forEach(movie => {
         const movieContainer = document.createElement('div');
@@ -86,7 +90,7 @@ async function getTrendingMoviesPreview() {
     
     const movies = data.results;
 
-    createMovies(movies, trendingMoviesPreviewList, true);
+    createMovies(movies, trendingMoviesPreviewList, {lazyLoad:true, clean:true});
 
     console.log('trend'+ movies);
 
@@ -137,10 +141,45 @@ async function getTrendingMovies() {
     
     const movies = data.results;
 
-    createMovies(movies, genericSection, true);
+    createMovies(movies, genericSection, {lazyLoad:true, clean:true});
 
     console.log('trend'+ movies);
 
+    // const btnLoadMore = document.createElement('button');
+    // btnLoadMore.innerText = 'Cargar mas...';
+    // btnLoadMore.addEventListener('click', getPaginatedTrendingMovies);
+    // genericSection.appendChild(btnLoadMore);
+
+}
+
+
+
+
+
+async function getPaginatedTrendingMovies() {
+
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+    const scrollIsBottom = (scrollTop + clientHeight) >= scrollHeight-15;
+
+    if (scrollIsBottom) {
+        page++;
+    const { data } = await api('trending/movie/week', {
+        params: {
+            page,
+        },
+    });
+    
+    const movies = data.results;
+
+    createMovies(movies, genericSection, {lazyLoad:true, clean:false});
+
+    }
+
+//     const btnLoadMore = document.createElement('button');
+//     btnLoadMore.innerText = 'Cargar mas...';
+//     btnLoadMore.addEventListener('click', getPaginatedTrendingMovies);
+//     genericSection.appendChild(btnLoadMore);
 }
 
 async function getMovieById(movieId) {
