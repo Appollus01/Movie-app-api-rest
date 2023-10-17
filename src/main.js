@@ -9,7 +9,6 @@ const api = axios.create({
     },
 });
 
-
 const lazyLoader = new IntersectionObserver( (entries) => {
     entries.forEach((entry)=>{
         if (entry.isIntersecting) {
@@ -37,8 +36,13 @@ function createMovies(movies, container, lazyLoad=false) {
         movieImg.setAttribute('alt', movie.title);
         movieImg.setAttribute(
             lazyLoad ? 'data-img' : 'src',
-            'https://image.tmdb.org/t/p/w300' + movie.poster_path );
-
+            'https://image.tmdb.org/t/p/w300' + movie.poster_path,);
+        
+        movieImg.addEventListener('error', () => {
+            
+            movieImg.setAttribute('src', '../img/image_not_found.png',);
+        })
+            
         if (lazyLoad) {
             lazyLoader.observe(movieImg);
         }
@@ -106,7 +110,7 @@ async function getMoviesByCategory(id) {
     
     const movies = data.results;
 
-    createMovies(movies, genericSection);
+    createMovies(movies, genericSection, true);
 
     console.log('category'+ movies);
 }
@@ -114,8 +118,9 @@ async function getMoviesByCategory(id) {
 async function getMoviesBySearch(query) {
     const { data } = await api('search/movie', {
         params: {
-            query: searchFormInput.value,
+            query,
         },
+        
     });
     
     const movies = data.results;
@@ -123,6 +128,7 @@ async function getMoviesBySearch(query) {
     createMovies(movies, genericSection);
 
     console.log('search'+ movies);
+    console.log(data.results);
 
 }
 
@@ -131,7 +137,7 @@ async function getTrendingMovies() {
     
     const movies = data.results;
 
-    createMovies(movies, genericSection);
+    createMovies(movies, genericSection, true);
 
     console.log('trend'+ movies);
 
